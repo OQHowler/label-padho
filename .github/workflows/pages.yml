@@ -35,14 +35,18 @@ jobs:
 
       - name: Save review numbers
         run: |
-          if [ -n "$(git status --porcelain -- _posts _system)" ]; then
+          # Only include folders that exist (Git doesn't store empty folders).
+          existing() { for p in _posts _system; do [ -e "$p" ] && printf '%s ' "$p"; done; }
+          paths="$(existing)"
+          if [ -n "$paths" ] && [ -n "$(git status --porcelain -- $paths)" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add -A _posts _system
+            git add -A -- $paths
             git commit -m "Assign permanent review numbers"
             git pull --rebase origin "${GITHUB_REF_NAME}"
             python3 _system/assign_post_numbers.py
-            git add -A _posts _system
+            paths="$(existing)"
+            git add -A -- $paths
             git diff --cached --quiet || git commit -m "Assign permanent review numbers"
             git push origin "HEAD:${GITHUB_REF_NAME}"
           else
