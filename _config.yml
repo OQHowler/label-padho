@@ -11,7 +11,7 @@ description: >-                           # <-- CHANGE (shown in Google results)
   judged on the ingredient list and the nutrition label.
 
 author:
-  name: "Your Name"                       # <-- CHANGE
+  name: "Shoubhit Wandile"                       # <-- CHANGE
   bio: "I read snack labels so you don't have to squint at them in the shop."  # <-- CHANGE
 
 lang: en-IN
@@ -26,7 +26,7 @@ timezone: Asia/Kolkata
 #  url never ends with a slash. baseurl always starts with a slash
 #  (unless it is empty) and never ends with one.
 # ---------------------------------------------------------------------
-url: "https://YOUR-USERNAME.github.io"    # <-- CHANGE
+url: "https://OQHowler.github.io"    # <-- CHANGE
 baseurl: "/label-padho"                   # <-- CHANGE (must match repo name exactly)
 
 # ---------------------------------------------------------------------
