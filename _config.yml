@@ -36,8 +36,8 @@ baseurl: "/label-padho"                   # <-- CHANGE (must match repo name exa
 #  the vote buttons, view counts and "Most upvoted / Most viewed".
 # ---------------------------------------------------------------------
 supabase:
-  url: ""   # <-- CHANGE e.g. "https://abcdefghijklm.supabase.co"
-  key: ""   # <-- CHANGE the "Publishable key" (starts with sb_publishable_)
+  url: "https://lcuujdrmgtnzlhyhzkkx.supabase.co"   # <-- CHANGE e.g. "https://abcdefghijklm.supabase.co"
+  key: "sb_publishable_Wbg_Ghq8ncKQS7IU5cHclA_sgElvPOC"   # <-- CHANGE the "Publishable key" (starts with sb_publishable_)
 analytics:
   track_localhost: false   # true only if you want visits counted while previewing locally
 
