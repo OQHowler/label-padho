@@ -1,0 +1,73 @@
+# Publishes the site. Runs every time you commit to the main branch.
+#   1. Gives new reviews a permanent number and restores any edited numbers
+#   2. Saves those numbers back into the repository
+#   3. Builds the site with Jekyll and publishes it to GitHub Pages
+#
+# Requires: Settings > Pages > Source set to "GitHub Actions".
+
+name: Publish site
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # full history, so renamed reviews can be matched to their old versions
+
+      - name: Assign permanent review numbers
+        run: python3 _system/assign_post_numbers.py
+
+      - name: Save review numbers
+        run: |
+          if [ -n "$(git status --porcelain -- _posts _system)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -A _posts _system
+            git commit -m "Assign permanent review numbers"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            python3 _system/assign_post_numbers.py
+            git add -A _posts _system
+            git diff --cached --quiet || git commit -m "Assign permanent review numbers"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          else
+            echo "All review numbers already in place."
+          fi
+
+      - name: Set up Pages
+        uses: actions/configure-pages@v5
+
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v3
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
