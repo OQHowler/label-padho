@@ -1,0 +1,16 @@
+<div class="vote{% if include.compact %} vote--compact{% endif %}" data-vote hidden>
+  {% unless include.compact %}<p class="vote__prompt">Agree with this review?</p>{% endunless %}
+  <div class="vote__buttons">
+    <button type="button" class="vote__btn vote__btn--up" data-vote-value="1" aria-pressed="false">
+      <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3l5 7H3z"/></svg>
+      <span class="vote__word">Upvote</span>
+      <span class="vote__count" data-vote-count="up">0</span>
+    </button>
+    <button type="button" class="vote__btn vote__btn--down" data-vote-value="-1" aria-pressed="false">
+      <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 13L3 6h10z"/></svg>
+      <span class="vote__word">Downvote</span>
+      <span class="vote__count" data-vote-count="down">0</span>
+    </button>
+  </div>
+  <p class="vote__status" data-vote-status role="status" aria-live="polite"></p>
+</div>

@@ -1,0 +1,94 @@
+---
+layout: default
+title: Site stats
+permalink: /stats/
+sitemap: false
+noindex: true
+no_track: true
+---
+<header class="page-hero">
+  <div class="wrap">
+    <h1 class="page-hero__title">Site stats</h1>
+    <p class="page-hero__lede">Visits, readers and votes across the blog. This page isn't linked anywhere and is hidden from search engines, and your own visits to it are never counted.</p>
+  </div>
+</header>
+
+<section class="wrap dash" data-dashboard>
+
+  <div class="empty" data-dash-off>
+    <p>Stats are switched off.</p>
+    <p class="empty__sub">Add your Supabase URL and publishable key to <code>_config.yml</code> to start counting. See Part 2 of the README.</p>
+  </div>
+
+  <div data-dash-on hidden>
+    <div class="dash__bar">
+      <p class="dash__status" data-dash-status role="status" aria-live="polite">Loading stats</p>
+      <div class="dash__actions">
+        <label>
+          <span class="visually-hidden">Time range</span>
+          <select id="dash-days">
+            <option value="7">Last 7 days</option>
+            <option value="30" selected>Last 30 days</option>
+            <option value="90">Last 90 days</option>
+          </select>
+        </label>
+        <button type="button" class="btn btn--secondary" data-dash-refresh>Refresh</button>
+      </div>
+    </div>
+
+    <div class="tiles">
+      <div class="tile"><p class="tile__num" data-tile="views_today">–</p><p class="tile__label">Visits today</p></div>
+      <div class="tile"><p class="tile__num" data-tile="views_7d">–</p><p class="tile__label">Visits, last 7 days</p></div>
+      <div class="tile"><p class="tile__num" data-tile="views_30d">–</p><p class="tile__label">Visits, last 30 days</p></div>
+      <div class="tile"><p class="tile__num" data-tile="visitors_30d">–</p><p class="tile__label">Readers, last 30 days</p></div>
+      <div class="tile"><p class="tile__num" data-tile="total_views">–</p><p class="tile__label">Visits, all time</p></div>
+      <div class="tile"><p class="tile__num" data-tile="unique_visitors">–</p><p class="tile__label">Readers, all time</p></div>
+      <div class="tile"><p class="tile__num" data-tile="total_votes">–</p><p class="tile__label">Votes, all time</p></div>
+      <div class="tile"><p class="tile__num">{{ site.posts.size }}</p><p class="tile__label">Reviews published</p></div>
+    </div>
+
+    <section class="dash__panel">
+      <h2 class="dash__title">Visits per day</h2>
+      <div class="chart" data-chart aria-hidden="true"></div>
+      <table class="visually-hidden" data-chart-table><caption>Visits per day</caption><thead><tr><th>Date</th><th>Visits</th><th>Readers</th></tr></thead><tbody></tbody></table>
+    </section>
+
+    <div class="dash__cols">
+      <section class="dash__panel">
+        <h2 class="dash__title">Reviews</h2>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th scope="col">Snack</th><th scope="col" class="num">Views</th><th scope="col" class="num">Up</th><th scope="col" class="num">Down</th></tr></thead>
+            <tbody data-dash-posts><tr><td colspan="4">Loading</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+      <section class="dash__panel">
+        <h2 class="dash__title">Most visited pages</h2>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th scope="col">Page</th><th scope="col" class="num">Visits</th><th scope="col" class="num">Readers</th></tr></thead>
+            <tbody data-dash-pages><tr><td colspan="3">Loading</td></tr></tbody>
+          </table>
+        </div>
+        <h2 class="dash__title dash__title--spaced">Where readers came from</h2>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th scope="col">Website</th><th scope="col" class="num">Visits</th></tr></thead>
+            <tbody data-dash-refs><tr><td colspan="2">Loading</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <section class="dash__panel dash__me">
+      <div>
+        <h2 class="dash__title">Your own visits</h2>
+        <p data-exclude-text>Your visits from this browser are currently being counted.</p>
+      </div>
+      <button type="button" class="btn btn--primary" data-exclude-toggle aria-pressed="false">Stop counting my visits</button>
+    </section>
+  </div>
+</section>
+
+{% include posts-json.html %}

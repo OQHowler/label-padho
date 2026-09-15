@@ -1,0 +1,69 @@
+---
+layout: default
+title: All reviews
+description: Every packaged snack reviewed so far. Search, filter by verdict or snack type, and sort by votes or views.
+permalink: /posts/
+---
+{% assign types = site.posts | group_by: "snack_type" | sort: "name" %}
+
+<header class="page-hero">
+  <div class="wrap">
+    <h1 class="page-hero__title">All reviews</h1>
+    <p class="page-hero__lede">One snack per post. Search by product or brand, or narrow down by verdict and snack type.</p>
+  </div>
+</header>
+
+<section class="wrap listing">
+  {% if site.posts.size > 0 %}
+  <div class="filters" data-filters hidden>
+    <label class="filters__search">
+      <span class="visually-hidden">Search reviews</span>
+      <input id="search" type="search" placeholder="Search a snack or brand" autocomplete="off">
+    </label>
+    <div class="filters__verdicts" role="group" aria-label="Filter by verdict">
+      <button type="button" data-filter-verdict="all" aria-pressed="true">All</button>
+      {% for verdict in site.data.verdicts %}
+      <button type="button" class="review--{{ verdict[0] }}" data-filter-verdict="{{ verdict[0] }}" aria-pressed="false">{{ verdict[1].label }}</button>
+      {% endfor %}
+    </div>
+    <div class="filters__selects">
+      <label>
+        <span class="visually-hidden">Snack type</span>
+        <select id="type">
+          <option value="all">All snack types</option>
+          {% for type in types %}
+            {% if type.name and type.name != "" %}
+            <option value="{{ type.name | slugify }}">{{ type.name | escape }}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+      </label>
+      <label data-sort-wrap hidden>
+        <span class="visually-hidden">Sort by</span>
+        <select id="sort">
+          <option value="newest">Newest first</option>
+          <option value="upvotes">Most upvoted</option>
+          <option value="views">Most viewed</option>
+          <option value="score">Highest score</option>
+        </select>
+      </label>
+    </div>
+  </div>
+
+  <p class="listing__count" data-count aria-live="polite">{{ site.posts.size }} {% if site.posts.size == 1 %}review{% else %}reviews{% endif %}</p>
+
+  <div class="grid" data-post-list>
+    {% for post in site.posts %}
+      {% include post-card.html post=post %}
+    {% endfor %}
+  </div>
+  <div class="empty" data-empty hidden>
+    <p>No reviews match these filters.</p>
+    <button type="button" class="btn btn--secondary" data-reset>Clear filters</button>
+  </div>
+  {% else %}
+  <div class="empty"><p>The first review is on its way.</p></div>
+  {% endif %}
+</section>
+
+{% include posts-json.html %}

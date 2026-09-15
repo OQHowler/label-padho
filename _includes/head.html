@@ -1,0 +1,21 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{% if page.noindex %}<meta name="robots" content="noindex, nofollow">{% endif %}
+{% seo %}
+{% feed_meta %}
+<meta name="theme-color" content="#ffd23f">
+<link rel="icon" type="image/svg+xml" href="{{ '/assets/favicon.svg' | relative_url }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap">
+<link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+{% capture lp_config %}{
+  "supabaseUrl": {{ site.supabase.url | default: "" | jsonify }},
+  "supabaseKey": {{ site.supabase.key | default: "" | jsonify }},
+  "trackLocalhost": {% if site.analytics.track_localhost == true %}true{% else %}false{% endif %},
+  "baseurl": {{ site.baseurl | default: "" | jsonify }},
+  "postId": {% if page.collection == "posts" and page.post_id %}{{ page.post_id | jsonify }}{% else %}null{% endif %},
+  "noTrack": {% if page.no_track %}true{% else %}false{% endif %}
+}{% endcapture %}
+<script id="lp-config" type="application/json">{{ lp_config | replace: "</", "<\/" }}</script>
+<script src="{{ '/assets/js/main.js' | relative_url }}" defer></script>

@@ -1,0 +1,17 @@
+{% comment %}
+  Data for the scripts. Only reviews that already have their permanent
+  number (post_id) are included; numbers are added automatically on GitHub.
+{% endcomment %}
+{% capture lp_posts %}{
+  "verdicts": {{ site.data.verdicts | jsonify }},
+  "posts": [{% assign lp_first = true %}{% for post in site.posts %}{% if post.post_id %}{% unless lp_first %},{% endunless %}{
+    "id": {{ post.post_id | jsonify }},
+    "url": {{ post.url | relative_url | jsonify }},
+    "product": {{ post.product | default: post.title | jsonify }},
+    "brand": {{ post.brand | default: "" | jsonify }},
+    "snackType": {{ post.snack_type | default: "" | jsonify }},
+    "verdict": {{ post.verdict | default: "okay" | jsonify }},
+    "score": {{ post.score | default: 0 | jsonify }}
+  }{% assign lp_first = false %}{% endif %}{% endfor %}]
+}{% endcapture %}
+<script id="lp-posts" type="application/json">{{ lp_posts | replace: "</", "<\/" }}</script>

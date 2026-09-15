@@ -1,0 +1,22 @@
+# The three verdicts used across the site.
+# The keys (good / okay / bad) are what you type in a post's front matter,
+# and also in an ingredient's "flag". Reword label, meaning, range and blurb
+# as you like, but do not rename the keys.
+
+good:
+  label: "Khao"
+  meaning: "Go for it"
+  range: "7 to 10"
+  blurb: "A snack you can pick up without a second thought."
+
+okay:
+  label: "Kabhi kabhi"
+  meaning: "Now and then"
+  range: "4 to 6"
+  blurb: "Fine as an occasional treat. Not an everyday habit."
+
+bad:
+  label: "Mat khao"
+  meaning: "Best avoided"
+  range: "1 to 3"
+  blurb: "The label speaks for itself. Put it back on the shelf."

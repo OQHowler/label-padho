@@ -1,0 +1,85 @@
+# =====================================================================
+#  SITE SETTINGS
+#  Edit every line marked  <-- CHANGE  before you publish.
+#  After editing this file, GitHub rebuilds the site in 1-3 minutes.
+# =====================================================================
+
+title: "Label Padho"                      # <-- CHANGE (your blog's name)
+tagline: "Padho label. Phir khao."        # <-- CHANGE (short slogan)
+description: >-                           # <-- CHANGE (shown in Google results)
+  Honest reviews of Indian packaged snacks, one product per post,
+  judged on the ingredient list and the nutrition label.
+
+author:
+  name: "Your Name"                       # <-- CHANGE
+  bio: "I read snack labels so you don't have to squint at them in the shop."  # <-- CHANGE
+
+lang: en-IN
+timezone: Asia/Kolkata
+
+# ---------------------------------------------------------------------
+#  WEB ADDRESS  (the most common cause of a "broken looking" site)
+#
+#  Repo named  YOUR-USERNAME.github.io   ->  baseurl: ""
+#  Repo named  anything-else             ->  baseurl: "/anything-else"
+#
+#  url never ends with a slash. baseurl always starts with a slash
+#  (unless it is empty) and never ends with one.
+# ---------------------------------------------------------------------
+url: "https://YOUR-USERNAME.github.io"    # <-- CHANGE
+baseurl: "/label-padho"                   # <-- CHANGE (must match repo name exactly)
+
+# ---------------------------------------------------------------------
+#  VOTES, VIEW COUNTS & VISIT TRACKING  (Supabase, free)
+#  Follow "Part 2" of README.md, then paste your two values here.
+#  While these are empty, the site works normally and simply hides
+#  the vote buttons, view counts and "Most upvoted / Most viewed".
+# ---------------------------------------------------------------------
+supabase:
+  url: ""   # <-- CHANGE e.g. "https://abcdefghijklm.supabase.co"
+  key: ""   # <-- CHANGE the "Publishable key" (starts with sb_publishable_)
+analytics:
+  track_localhost: false   # true only if you want visits counted while previewing locally
+
+# Optional links shown in the footer. Leave "" to hide.
+social:
+  instagram: ""     # just the username, e.g. "labelpadho"
+  x: ""             # just the username, e.g. "labelpadho"
+  email: ""         # e.g. "you@example.com"
+
+# ---------------------------------------------------------------------
+#  BUILD SETTINGS (no need to change)
+# ---------------------------------------------------------------------
+# Each review's address is set automatically to /posts/<number>/ on GitHub.
+# This fallback is only used when previewing a brand-new review locally.
+permalink: /posts/draft-:title/
+markdown: kramdown
+kramdown:
+  input: GFM
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: "page"
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+
+exclude:
+  - README.md
+  - supabase
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .bundle
+  - .jekyll-cache
+  - .sass-cache

@@ -1,0 +1,19 @@
+<footer class="site-footer">
+  <div class="wrap site-footer__inner">
+    <div class="site-footer__brand">
+      <p class="brand__name">{{ site.title }}</p>
+      <p>{{ site.tagline }}</p>
+    </div>
+    <div class="site-footer__small">
+      <p>Reviews are personal opinions based on printed ingredient lists and nutrition labels. They are general information, not medical or dietary advice. Brands change recipes, so always check the pack in your hand.</p>
+      {% if site.supabase.url != "" and site.supabase.key != "" %}<p>This site counts visits and votes anonymously using a random ID stored in your browser. No cookies, no names, no IP addresses.</p>{% endif %}
+    </div>
+    <ul class="site-footer__links">
+      <li><a href="{{ '/feed.xml' | relative_url }}">RSS feed</a></li>
+      {% if site.social.instagram and site.social.instagram != "" %}<li><a href="https://www.instagram.com/{{ site.social.instagram }}/" rel="me noopener">Instagram</a></li>{% endif %}
+      {% if site.social.x and site.social.x != "" %}<li><a href="https://x.com/{{ site.social.x }}" rel="me noopener">X</a></li>{% endif %}
+      {% if site.social.email and site.social.email != "" %}<li><a href="mailto:{{ site.social.email }}">Email</a></li>{% endif %}
+    </ul>
+    <p class="site-footer__copy">&copy; {{ site.time | date: "%Y" }} {{ site.author.name }}</p>
+  </div>
+</footer>

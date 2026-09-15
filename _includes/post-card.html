@@ -1,0 +1,28 @@
+{% assign card = include.post %}
+{% capture haystack %}{% if card.post_id %}no. {{ card.post_id }} {% endif %}{{ card.product }} {{ card.brand }} {{ card.snack_type }} {{ card.title }} {{ card.description }}{% endcapture %}
+<article class="card card--{{ card.verdict }}" data-post-id="{{ card.post_id }}" data-verdict="{{ card.verdict }}" data-type="{{ card.snack_type | slugify }}" data-search="{{ haystack | strip_newlines | downcase | escape }}">
+  <div class="card__media{% unless card.image %} card__media--empty{% endunless %}">
+    {% if card.image %}
+    <img src="{{ card.image | relative_url }}" alt="{{ card.image_alt | default: card.product | escape }}" loading="lazy">
+    {% else %}
+    <span class="card__placeholder" aria-hidden="true"><span class="mark__sym"></span></span>
+    {% endif %}
+  </div>
+  <div class="card__body">
+    <div class="card__top">
+      <span class="card__type">{% if card.post_id %}<span class="card__no">No. {{ card.post_id }}</span>{% endif %}{{ card.snack_type | escape }}</span>
+      {% include verdict-mark.html verdict=card.verdict %}
+    </div>
+    <h3 class="card__product"><a href="{{ card.url | relative_url }}">{{ card.product | default: card.title | escape }}</a></h3>
+    {% if card.brand %}<p class="card__brand">{{ card.brand | escape }}</p>{% endif %}
+    <p class="card__title">{{ card.title | escape }}</p>
+    <div class="card__foot">
+      {% include score.html score=card.score %}
+      {% if card.post_id %}<span class="card__stats" data-card-stats hidden>
+        <span class="card__stat" title="Upvotes"><svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3l5 7H3z"/></svg><span data-card-up>0</span><span class="visually-hidden"> upvotes</span></span>
+        <span class="card__stat" title="Views"><span data-card-views>0</span> <span data-card-views-unit>views</span></span>
+      </span>{% endif %}
+      <time datetime="{{ card.date | date_to_xmlschema }}" data-card-date>{{ card.date | date: "%-d %b %Y" }}</time>
+    </div>
+  </div>
+</article>

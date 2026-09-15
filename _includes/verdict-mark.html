@@ -1,0 +1,9 @@
+{% assign mark_key = include.verdict | default: "okay" %}
+{% assign mark_data = site.data.verdicts[mark_key] %}
+<span class="mark mark--{{ mark_key }}{% if include.size %} mark--{{ include.size }}{% endif %}">
+  <span class="mark__sym" aria-hidden="true"></span>
+  <span class="mark__text">
+    <span class="mark__label">{{ mark_data.label }}</span>
+    {% if include.size == "lg" %}<span class="mark__meaning">{{ mark_data.meaning }}</span>{% endif %}
+  </span>
+</span>

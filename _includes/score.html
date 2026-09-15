@@ -1,0 +1,5 @@
+{% assign score_value = include.score | default: 0 %}
+<span class="score{% if include.size %} score--{{ include.size }}{% endif %}" style="--score: {{ score_value }}">
+  <span class="score__bar" aria-hidden="true"><span></span></span>
+  <span class="score__num"><strong>{{ score_value }}</strong>/10</span>
+</span>

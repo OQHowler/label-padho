@@ -1,0 +1,138 @@
+---
+layout: default
+---
+{% assign reading_time = content | number_of_words | divided_by: 200 | plus: 1 %}
+<article class="review review--{{ page.verdict }}">
+
+  <header class="review__hero">
+    <div class="wrap review__hero-inner{% if page.image %} has-image{% endif %}">
+      <div class="review__hero-text">
+        <p class="review__crumbs">
+          <a href="{{ '/posts/' | relative_url }}">All reviews</a>
+          {% if page.post_id %}<span aria-hidden="true">/</span>
+          <span class="review__no">Review No. {{ page.post_id }}</span>{% endif %}
+          {% if page.snack_type %}<span aria-hidden="true">/</span>
+          <a href="{{ '/posts/' | relative_url }}?type={{ page.snack_type | slugify }}">{{ page.snack_type | escape }}</a>{% endif %}
+        </p>
+        <h1 class="review__product">{{ page.product | default: page.title | escape }}</h1>
+        {% if page.brand %}<p class="review__brand">by {{ page.brand | escape }}</p>{% endif %}
+        <p class="review__title">{{ page.title | escape }}</p>
+
+        {% if page.pack_size or page.price or page.label_checked %}
+        <dl class="review__facts">
+          {% if page.pack_size %}<div><dt>Pack size</dt><dd>{{ page.pack_size | escape }}</dd></div>{% endif %}
+          {% if page.price %}<div><dt>Price</dt><dd>{{ page.price | escape }}</dd></div>{% endif %}
+          {% if page.label_checked %}<div><dt>Label checked</dt><dd>{{ page.label_checked | escape }}</dd></div>{% endif %}
+        </dl>
+        {% endif %}
+
+        <p class="review__meta">
+          Published <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%-d %B %Y" }}</time>,
+          {{ reading_time }} min read<span data-post-views hidden>, <span data-post-views-count>0</span> <span data-post-views-unit>views</span></span>
+        </p>
+      </div>
+
+      {% if page.image %}
+      <figure class="review__pack">
+        <img src="{{ page.image | relative_url }}" alt="{{ page.image_alt | default: page.product | escape }}">
+      </figure>
+      {% endif %}
+    </div>
+  </header>
+
+  <div class="wrap review__grid">
+
+    <aside class="review__side">
+      <section class="verdict-box" aria-label="Verdict">
+        <h2 class="verdict-box__heading">The verdict</h2>
+        {% include verdict-mark.html verdict=page.verdict size="lg" %}
+        {% include score.html score=page.score size="lg" %}
+        {% if page.description %}<p class="verdict-box__summary">{{ page.description | escape }}</p>{% endif %}
+        {% include vote.html compact=true %}
+      </section>
+
+      {% if page.nutrition %}
+      <section class="nutri" aria-label="Nutrition facts for {{ page.product | escape }}">
+        <h2 class="nutri__title">Nutrition facts</h2>
+        <p class="nutri__basis">{{ page.nutrition_basis | default: "Per 100 g" }}</p>
+        <table class="nutri__table">
+          <tbody>
+          {% for row in page.nutrition %}
+            <tr class="{% if row.sub %}is-sub{% endif %}{% if row.flag %} is-flag is-flag--{{ row.flag }}{% endif %}">
+              <th scope="row">{{ row.name | escape }}</th>
+              <td>{% if row.flag %}<span class="flag-dot" aria-hidden="true"></span><span class="visually-hidden">({{ site.data.verdicts[row.flag].label }}) </span>{% endif %}{{ row.value | escape }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        {% if page.nutrition_note %}<p class="nutri__note">{{ page.nutrition_note | escape }}</p>{% endif %}
+      </section>
+      {% endif %}
+    </aside>
+
+    <div class="review__main">
+
+      {% if page.ingredients %}
+      <section class="ingredients" aria-labelledby="ingredients-heading">
+        <div class="ingredients__head">
+          <h2 id="ingredients-heading" class="ingredients__title">Ingredients, in label order</h2>
+          <p class="ingredients__hint">Listed from most to least by weight.</p>
+        </div>
+        <ol class="ing-list">
+          {% for ing in page.ingredients %}
+          <li class="ing{% if ing.flag %} ing--{{ ing.flag }}{% endif %}">
+            <span class="ing__pos" aria-hidden="true">{{ forloop.index }}</span>
+            <div class="ing__body">
+              <span class="ing__name">{{ ing.name | escape }}</span>
+              {% if ing.note %}<span class="ing__note">{{ ing.note | escape }}</span>{% endif %}
+            </div>
+            {% if ing.flag %}{% include verdict-mark.html verdict=ing.flag %}{% endif %}
+          </li>
+          {% endfor %}
+        </ol>
+      </section>
+      {% endif %}
+
+      {% if page.good_points or page.bad_points %}
+      <div class="proscons">
+        {% if page.good_points %}
+        <section class="proscons__col proscons__col--good">
+          <h2>What works</h2>
+          <ul>{% for point in page.good_points %}<li>{{ point | escape }}</li>{% endfor %}</ul>
+        </section>
+        {% endif %}
+        {% if page.bad_points %}
+        <section class="proscons__col proscons__col--bad">
+          <h2>What doesn't</h2>
+          <ul>{% for point in page.bad_points %}<li>{{ point | escape }}</li>{% endfor %}</ul>
+        </section>
+        {% endif %}
+      </div>
+      {% endif %}
+
+      <div class="prose">
+        {{ content }}
+      </div>
+
+      {% include vote.html %}
+
+      {% if page.previous or page.next %}
+      <nav class="post-nav" aria-label="More reviews">
+        {% if page.previous %}
+        <a class="post-nav__link" href="{{ page.previous.url | relative_url }}">
+          <span class="post-nav__hint">Older review</span>
+          <span class="post-nav__name">{{ page.previous.product | default: page.previous.title | escape }}</span>
+        </a>
+        {% endif %}
+        {% if page.next %}
+        <a class="post-nav__link post-nav__link--next" href="{{ page.next.url | relative_url }}">
+          <span class="post-nav__hint">Newer review</span>
+          <span class="post-nav__name">{{ page.next.product | default: page.next.title | escape }}</span>
+        </a>
+        {% endif %}
+      </nav>
+      {% endif %}
+    </div>
+
+  </div>
+</article>
