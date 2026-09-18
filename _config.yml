@@ -11,7 +11,7 @@ description: >-                           # <-- CHANGE (shown in Google results)
   judged on the ingredient list and the nutrition label.
 
 author:
-  name: "Shoubhit Wandile"                       # <-- CHANGE
+  name: "Your Name"                       # <-- CHANGE
   bio: "I read snack labels so you don't have to squint at them in the shop."  # <-- CHANGE
 
 lang: en-IN
@@ -26,7 +26,7 @@ timezone: Asia/Kolkata
 #  url never ends with a slash. baseurl always starts with a slash
 #  (unless it is empty) and never ends with one.
 # ---------------------------------------------------------------------
-url: "https://OQHowler.github.io"    # <-- CHANGE
+url: "https://YOUR-USERNAME.github.io"    # <-- CHANGE
 baseurl: "/label-padho"                   # <-- CHANGE (must match repo name exactly)
 
 # ---------------------------------------------------------------------
@@ -36,8 +36,8 @@ baseurl: "/label-padho"                   # <-- CHANGE (must match repo name exa
 #  the vote buttons, view counts and "Most upvoted / Most viewed".
 # ---------------------------------------------------------------------
 supabase:
-  url: "https://lcuujdrmgtnzlhyhzkkx.supabase.co"   # <-- CHANGE e.g. "https://abcdefghijklm.supabase.co"
-  key: "sb_publishable_Wbg_Ghq8ncKQS7IU5cHclA_sgElvPOC"   # <-- CHANGE the "Publishable key" (starts with sb_publishable_)
+  url: ""   # <-- CHANGE e.g. "https://abcdefghijklm.supabase.co"
+  key: ""   # <-- CHANGE the "Publishable key" (starts with sb_publishable_)
 analytics:
   track_localhost: false   # true only if you want visits counted while previewing locally
 

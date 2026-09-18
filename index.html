@@ -1,9 +1,6 @@
 ---
 layout: default
 ---
-{% assign count_good = site.posts | where: "verdict", "good" %}
-{% assign count_okay = site.posts | where: "verdict", "okay" %}
-{% assign count_bad = site.posts | where: "verdict", "bad" %}
 {% assign latest = site.posts.first %}
 {% assign types = site.posts | group_by: "snack_type" | sort: "name" %}
 
@@ -24,9 +21,10 @@ layout: default
       <table class="nutri__table">
         <tbody>
           <tr><th scope="row">Snacks reviewed</th><td>{{ site.posts.size }}</td></tr>
-          <tr class="is-sub"><th scope="row">{{ site.data.verdicts.good.label }}</th><td>{{ count_good.size }}</td></tr>
-          <tr class="is-sub"><th scope="row">{{ site.data.verdicts.okay.label }}</th><td>{{ count_okay.size }}</td></tr>
-          <tr class="is-sub"><th scope="row">{{ site.data.verdicts.bad.label }}</th><td>{{ count_bad.size }}</td></tr>
+          {% for band in site.data.stars %}
+          {% assign band_posts = site.posts | where: "stars", band.stars %}
+          <tr class="is-sub"><th scope="row">{{ band.stars }} star{% if band.stars != 1 %}s{% endif %}</th><td>{{ band_posts.size }}</td></tr>
+          {% endfor %}
           <tr data-total-views-row hidden><th scope="row">Labels read by visitors</th><td data-total-views>0</td></tr>
           <tr><th scope="row">Sponsored posts</th><td>0</td></tr>
           <tr><th scope="row">Sugarcoating</th><td>0 g</td></tr>
@@ -38,10 +36,11 @@ layout: default
 </section>
 
 {% if latest %}
+{% assign latest_stars = latest.stars | plus: 0 %}
 <section class="section">
   <div class="wrap">
-    <h2 class="section__title">Latest verdict</h2>
-    <article class="feature review--{{ latest.verdict }}{% if latest.image %} has-image{% endif %}">
+    <h2 class="section__title">Latest review</h2>
+    <article class="feature rating--band{{ latest_stars }}{% if latest.image %} has-image{% endif %}">
       {% if latest.image %}
       <div class="feature__media">
         <img src="{{ latest.image | relative_url }}" alt="{{ latest.image_alt | default: latest.product | escape }}">
@@ -54,9 +53,9 @@ layout: default
         <p class="feature__title">{{ latest.title | escape }}</p>
         {% if latest.description %}<p class="feature__summary">{{ latest.description | escape }}</p>{% endif %}
       </div>
-      <div class="feature__verdict">
-        {% include verdict-mark.html verdict=latest.verdict size="lg" %}
-        {% include score.html score=latest.score size="lg" %}
+      <div class="feature__rating">
+        {% include stars.html stars=latest_stars size="lg" %}
+        <p class="feature__band">{{ latest_stars }} out of 5</p>
       </div>
     </article>
   </div>
@@ -85,21 +84,22 @@ layout: default
 <section class="section{% unless latest %} section--tint{% endunless %}">
   <div class="wrap">
     <div class="section__head">
-      <h2 class="section__title">Three verdicts, nothing in between</h2>
-      <p class="section__intro">Every snack gets a score out of 10 and one of three marks, borrowed from the little square symbol you already look for on every packet.</p>
+      <h2 class="section__title">What the stars mean</h2>
+      <p class="section__intro">Every snack gets a rating from one to five stars, based on its ingredient list and nutrition label.</p>
     </div>
-    <div class="scale">
-      {% for verdict in site.data.verdicts %}
-      {% assign verdict_key = verdict[0] %}
-      {% assign verdict_posts = site.posts | where: "verdict", verdict_key %}
-      <a class="scale__item review--{{ verdict_key }}" href="{{ '/posts/' | relative_url }}?verdict={{ verdict_key }}">
-        {% include verdict-mark.html verdict=verdict_key size="lg" %}
-        <p class="scale__range">Score {{ verdict[1].range }}</p>
-        <p class="scale__blurb">{{ verdict[1].blurb }}</p>
-        <p class="scale__count">See {{ verdict_posts.size }} {% if verdict_posts.size == 1 %}review{% else %}reviews{% endif %}</p>
-      </a>
+    <ul class="scale">
+      {% for band in site.data.stars %}
+      {% assign band_posts = site.posts | where: "stars", band.stars %}
+      <li class="scale__item rating--band{{ band.stars }}">
+        <a href="{{ '/posts/' | relative_url }}?stars={{ band.stars }}">
+          {% include stars.html stars=band.stars %}
+          <p class="scale__label">{{ band.label }}</p>
+          <p class="scale__blurb">{{ band.blurb }}</p>
+          <p class="scale__count">See {{ band_posts.size }} {% if band_posts.size == 1 %}review{% else %}reviews{% endif %}</p>
+        </a>
+      </li>
       {% endfor %}
-    </div>
+    </ul>
   </div>
 </section>
 

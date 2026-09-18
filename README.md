@@ -3,6 +3,7 @@
 A blog reviewing Indian packaged snacks, **one post per product** (one for Maggi, one for Kurkure, and so on).
 
 - **Website:** published free on GitHub Pages by a GitHub Actions workflow.
+- **Ratings:** every snack gets 1 to 5 stars.
 - **Permanent review numbers:** every review gets a number (No. 1, No. 2 …) that never changes.
   Its page address, votes and views all belong to that number.
 - **Votes, view counts and visit tracking:** stored in a free Supabase database.
@@ -19,7 +20,8 @@ The site works without Supabase. Until you connect it, vote buttons, view counts
 | `_config.yml` | **Site settings. Edit this first.** |
 | `_posts/` | Your reviews. One file = one snack |
 | `_templates/new-post.md` | Copy this to start every review |
-| `_data/verdicts.yml` | Names of the three verdicts |
+| `_data/stars.yml` | Names and descriptions of the five star ratings |
+| `_data/flags.yml` | Labels for the optional ingredient marks |
 | `index.html` | Landing page |
 | `posts/index.html` | All reviews: search, filters, sorting |
 | `stats/index.html` | Stats dashboard at `/stats/` |
@@ -102,11 +104,11 @@ click **Stop counting my visits**.
 
 | Feature | Where | Details |
 |---|---|---|
-| **Upvote / downvote** | Each review (verdict box and end of post) | One vote per browser per review. Click again to undo, or switch sides |
+| **Upvote / downvote** | Each review (rating box and end of post) | One vote per browser per review. Click again to undo, or switch sides |
 | **View count** | Review header, cards | Reloading within 30 minutes isn't counted twice |
 | **Most upvoted (top 3)** | Home page | By upvotes, then net score, then views |
 | **Most viewed (top 3)** | Home page | By views |
-| **Sorting** | All reviews page | Newest, most upvoted, most viewed, highest score |
+| **Sorting** | All reviews page | Newest, most upvoted, most viewed, highest rated |
 | **Visit tracking** | `/stats/` | Visits today / 7 / 30 days / all time, unique readers, daily chart, top pages, referring websites, per-review views and votes |
 
 **Privacy:** each browser gets a random ID in localStorage. No cookies, IP addresses or personal
@@ -164,12 +166,11 @@ Each run's log is shown under **Actions > Publish site > (latest run)**, in a "R
 | `product` | Yes | `"Maggi 2-Minute Masala Noodles"` | Big name everywhere |
 | `brand` | Yes | `"Nestlé"` | Under the product name |
 | `snack_type` | Yes | `"Instant noodles"` | Grouping and filters. Spell it identically each time |
-| `verdict` | Yes | `bad` | `good`, `okay` or `bad` |
-| `score` | Yes | `3` | Whole number from 1 to 10 |
-| `description` | Yes | `"One or two sentences."` | Cards, verdict box, Google |
+| `stars` | Yes | `2` | The rating: a whole number from 1 to 5 |
+| `description` | Yes | `"One or two sentences."` | Cards, rating box, Google |
 | `image`, `image_alt` | No | `"/assets/images/maggi.jpg"` | Pack photo |
 | `pack_size`, `price`, `label_checked` | No | `"70 g"`, `"₹15"`, `"October 2026"` | Fact strip in the header |
-| `ingredients` | No | list of `name`, `flag`, `note` | Numbered ingredient list with coloured marks |
+| `ingredients` | No | list of `name`, `flag`, `note` | Numbered ingredient list. `flag` is `good`, `okay` or `bad` |
 | `nutrition`, `nutrition_basis`, `nutrition_note` | No | list of `name`, `value`, `sub`, `flag` | Nutrition facts panel |
 | `good_points`, `bad_points` | No | lists | "What works / What doesn't" boxes |
 | `post_id`, `permalink` | **Never type these** | | Added by the robot |
@@ -207,7 +208,7 @@ delete from public.page_views where post_id = 7;
 | Run fails at **Build with Jekyll** | Front matter typo. Open the failed step to see the file and line. Quote text containing `:`, indent with spaces |
 | Site has no styling | `baseurl` in `_config.yml` doesn't match the repository name |
 | Review doesn't appear | Future date, file name doesn't start with `YYYY-MM-DD-`, or file isn't in `_posts` |
-| Verdict mark is blank | `verdict` or `flag` isn't exactly `good`, `okay` or `bad` |
+| Stars look wrong or missing | `stars` must be a whole number from 1 to 5, with no quotes |
 | Vote buttons don't appear | Supabase `url`/`key` empty or mistyped, or the run hasn't finished |
 | `/stats/` says "Stats couldn't load" | `setup.sql` wasn't run, wrong URL, or secret key used instead of publishable key |
 | GitHub says your edit conflicts | The robot updated the file after your last commit. Reload the page and edit again |
@@ -217,7 +218,7 @@ delete from public.page_views where post_id = 7;
 ## Customising the look
 
 - **Name and slogan:** `title` and `tagline` in `_config.yml`. The big hero headline is in `index.html`.
-- **Verdict names:** `_data/verdicts.yml` (don't rename the keys `good`, `okay`, `bad`).
+- **Star wording:** `_data/stars.yml` holds the name and description for each rating (Excellent, Good, Okay, Poor, Terrible). Keep the five `stars:` numbers as they are.
 - **Colours:** variables at the top of `assets/css/style.css`: `--packet`, `--good`, `--okay`, `--bad`.
 - **Font:** Archivo from Google Fonts, in `_includes/head.html`.
 - **Custom domain:** Settings > Pages > Custom domain, then set `url` to your domain and `baseurl` to `""`.
